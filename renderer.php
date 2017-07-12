@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/course/format/topics/renderer.php');
 require_once($CFG->dirroot  . '/mod/forum/lib.php');
 
 class format_cvo_renderer extends format_topics_renderer {
-    
+
     /**
      * Generate the section title, wraps it in a link to the section page if page is to be displayed on a separate page
      *
@@ -46,7 +46,7 @@ class format_cvo_renderer extends format_topics_renderer {
         if ($section->section == 0 && !$onsectionpage) {
             if ($section->visible) {
                 $forums = forum_get_readable_forums($USER->id, $course->id);
-                foreach($forums as $forum) {
+                foreach ($forums as $forum) {
                     forum_print_latest_discussions($course, $forum, 3);
                     break;
                 }
