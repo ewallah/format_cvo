@@ -1,6 +1,6 @@
 @format @format_cvo @javascript
 
-  Feature: format_cvo
+Feature: format_cvo
 
   Background:
     Given the following "courses" exist:
