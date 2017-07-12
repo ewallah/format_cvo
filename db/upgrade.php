@@ -15,16 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Upgrade scripts for course format "cvo"
  *
  * @package    format_cvo
- * @copyright  2016 cvo
- * @author     Renaat Debleu (info@eWallah.net)
+ * @copyright  2017 moodle.cvo_ssh.be
+ * @author     Renaat Debleu (www.ewallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017070600;
-$plugin->requires  = 2017051501;
-$plugin->component = 'format_cvo';
+/**
+ * Upgrade script for format_cvo
+ *
+ * @param int $oldversion the version we are upgrading from
+ * @return bool result
+ */
+function xmldb_format_cvo_upgrade($oldversion) {
+    global $CFG, $DB;
+    require_once($CFG->dirroot . '/course/format/cvo/db/upgradelib.php');
+
+    if ($oldversion < 2017070600) {
+        // Remove 'numsections' option and hide or delete orphaned sections.
+        format_cvo_upgrade_remove_numsections();
+
+        upgrade_plugin_savepoint(true, 2017070600, 'format', 'cvo');
+    }
+
+    // Automatically generated Moodle v3.3.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    return true;
+}
