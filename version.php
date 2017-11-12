@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2017070600;
+$plugin->version   = 2017111100;
 $plugin->requires  = 2017051501;
 $plugin->component = 'format_cvo';
