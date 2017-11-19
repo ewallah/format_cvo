@@ -14,12 +14,12 @@ addons:
     packages:
       - oracle-java8-installer
       - oracle-java8-set-default
+      - chromium-chromedriver
 
 cache:
   directories:
     - $HOME/.composer/cache
     - $HOME/.npm
-
 
 php:
  - 7.0
@@ -54,3 +54,4 @@ script:
   - moodle-plugin-ci grunt
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
+  - moodle-plugin-ci behat --profile chrome
