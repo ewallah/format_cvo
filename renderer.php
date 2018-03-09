@@ -17,10 +17,10 @@
 /**
  * Renderer for outputting the cvo course format.
  *
- * @package    format_cvo
- * @copyright  2016 cvo
- * @author     Renaat Debleu (info@eWallah.net)
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   format_cvo
+ * @copyright 2018 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

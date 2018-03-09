@@ -18,7 +18,7 @@
  * This file contains main class for the course format i+ topic
  *
  * @package    format_cvo
- * @copyright  2016 cvo
+ * @copyright  2016 cvo-ssh.be
  * @author     Renaat Debleu (info@eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -59,7 +59,7 @@ function format_cvo_inplace_editable($itemtype, $itemid, $newvalue) {
     if ($itemtype === 'sectionname' || $itemtype === 'sectionnamenl') {
         $section = $DB->get_record_sql(
             'SELECT s.* FROM {course_sections} s JOIN {course} c ON s.course = c.id WHERE s.id = ? AND c.format = ?',
-            array($itemid, 'cvo'), MUST_EXIST);
+            [$itemid, 'cvo'], MUST_EXIST);
         return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype, $newvalue);
     }
 }

@@ -15,21 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'format_cvo', language 'en', branch 'MOODLE_28_STABLE'
+ * Privacy main class.
  *
- * @package    format_cvo
- * @copyright  2015 cvo
- * @author     Renaat Debleu (info@eWallah.net)
+ * @package   format_cvo
+ * @copyright 2018 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['createsession'] = 'Create new session';
-$string['currentsection'] = 'This topic';
-$string['hidefromothers'] = 'Hide topic';
-$string['page-course-view-topics'] = 'Any course main page in topics format';
-$string['page-course-view-topics-x'] = 'Any course page in topics format';
-$string['pluginname'] = 'CVO Topics format';
-$string['privacy:null_reason'] = 'The format_cvo plugin does not store any personal data.';
-$string['sectionname'] = 'Topic';
-$string['section0name'] = 'General';
-$string['showfromothers'] = 'Show topic';
+namespace format_cvo\privacy;
+
+defined('MOODLE_INTERNAL') || die();
+
+class provider implements \core_privacy\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:null_reason';
+    }
+}

@@ -18,7 +18,7 @@
  * Version details
  *
  * @package    format_cvo
- * @copyright  2016 cvo
+ * @copyright  2018 cvo-ssh.be
  * @author     Renaat Debleu (info@eWallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,4 +29,4 @@ $plugin->version   = 2017111100;
 $plugin->requires  = 2017051501;
 $plugin->component = 'format_cvo';
 $plugin->release   = '3.4';
-$plugin->maturity = MATURITY_STABLE;
+$plugin->maturity  = MATURITY_STABLE;
