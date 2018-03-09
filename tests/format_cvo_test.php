@@ -109,7 +109,7 @@ class format_cvo_testcase extends advanced_testcase {
         foreach ($coursesections as $section) {
             if ($section->section == 0) {
                 $sectionname = get_string('section0name', 'format_cvo');
-                $this->assertEquals($sectionname, 'Introduction to the course');
+                $this->assertEquals($sectionname, 'General');
             } else {
                 $sectionname = get_string('sectionname', 'format_cvo') . ' ' . $section->section;
                 $this->assertEquals($sectionname, $courseformat->get_default_section_name($section));
