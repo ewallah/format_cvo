@@ -18,7 +18,7 @@
  * Renderer for outputting the cvo course format.
  *
  * @package   format_cvo
- * @copyright 2016 cvo-ssh.be
+ * @copyright 2018 cvo-ssh.be
  * @author    Renaat Debleu (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,10 +30,10 @@ require_once($CFG->dirroot  . '/mod/forum/lib.php');
 /**
  * Renderer for outputting the cvo course format.
  *
- * @package    format_cvo
- * @copyright  2016 cvo
- * @author     Renaat Debleu (info@eWallah.net)
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   format_cvo
+ * @copyright 2018 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class format_cvo_renderer extends format_topics_renderer {
 

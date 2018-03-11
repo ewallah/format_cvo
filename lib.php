@@ -17,10 +17,17 @@
 /**
  * This file contains main class for the course format i+ topic
  *
+<<<<<<< HEAD
  * @package   format_cvo
  * @copyright 2016 cvo-ssh.be
  * @author    Renaat Debleu (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+=======
+ * @package    format_cvo
+ * @copyright  2018 cvo-ssh.be
+ * @author     Renaat Debleu (info@eWallah.net)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+>>>>>>> 1acf87acb06867410d76c464370985274d6379e6
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -49,8 +56,40 @@ class format_cvo extends format_topics {
      */
     public function inplace_editable_render_section_name($section, $linkifneeded = true,
                                                          $editable = null, $edithint = null, $editlabel = null) {
+        if (empty($edithint)) {
+            $edithint = new lang_string('editsectionname', 'format_topics');
+        }
+        if (empty($editlabel)) {
+            $title = get_section_name($section->course, $section);
+            $editlabel = new lang_string('newsectionname', 'format_topics', $title);
+        }
         return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
+
+    /**
+     * Indicates whether the course format supports the creation of a news forum.
+     *
+     * @return bool
+     */
+    public function supports_news() {
+        return true;
+    }
+
+    /**
+     * Returns the default end date for iplus course format.
+     *
+     * @param moodleform $mform
+     * @param array $fieldnames The form - field names mapping.
+     * @return int
+     */
+    public function get_default_course_enddate($mform, $fieldnames = []) {
+        if (empty($fieldnames['startdate'])) {
+            $fieldnames['startdate'] = 'startdate';
+        }
+        $startdate = $this->get_form_start_date($mform, $fieldnames);
+        return strtotime(date("Y-m-d", $startdate) . " +1 year");
+    }
+
 }
 
 /**

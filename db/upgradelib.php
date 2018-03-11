@@ -18,7 +18,7 @@
  * Upgrade scripts for course format "cvo"
  *
  * @package    format_cvo
- * @copyright  2017 moodle.cvo-ssh.be
+ * @copyright  2017 cvo-ssh.be
  * @author     Renaat Debleu (www.ewallah.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
