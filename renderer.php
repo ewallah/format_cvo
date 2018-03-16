@@ -27,6 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/course/format/topics/renderer.php');
 require_once($CFG->dirroot  . '/mod/forum/lib.php');
 
+/**
+ * Renderer for outputting the cvo course format.
+ *
+ * @package   format_cvo
+ * @copyright 2018 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class format_cvo_renderer extends format_topics_renderer {
 
     /**
@@ -40,6 +48,16 @@ class format_cvo_renderer extends format_topics_renderer {
         return $this->render(course_get_format($course)->inplace_editable_render_section_name($section));
     }
 
+    /**
+     * Generate the display of the header part of a section before
+     * course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a single-section page
+     * @param int $sectionreturn The section to return to after an action
+     * @return string HTML to output.
+     */
     protected function section_header($section, $course, $onsectionpage, $sectionreturn=null) {
         global $USER;
 

@@ -27,6 +27,14 @@ namespace format_cvo\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Privacy main class.
+ *
+ * @package   format_cvo
+ * @copyright 2018 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
 
     /**

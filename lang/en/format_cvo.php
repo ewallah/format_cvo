@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'format_cvo', language 'en', branch 'MOODLE_28_STABLE'
+ * Strings for component 'format_cvo', language 'en'
  *
- * @package    format_cvo
- * @copyright  2015 cvo
- * @author     Renaat Debleu (info@eWallah.net)
+ * @package   format_cvo
+ * @copyright 2015 cvo-ssh.be
+ * @author    Renaat Debleu (info@eWallah.net)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
