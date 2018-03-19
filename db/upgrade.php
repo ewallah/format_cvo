@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool result
  */
 function xmldb_format_cvo_upgrade($oldversion) {
-    global $CFG;
+    global $CFG, $DB;
     require_once($CFG->dirroot . '/course/format/cvo/db/upgradelib.php');
 
     if ($oldversion < 2017070600) {
