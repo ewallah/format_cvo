@@ -39,26 +39,6 @@ require_once($CFG->dirroot . '/course/lib.php');
 class format_cvo_testcase extends advanced_testcase {
 
     /**
-     * Tests for format_cvo::get_section_name method with default section names.
-     */
-    public function test_get_section_name() {
-        global $DB;
-        $this->resetAfterTest(true);
-
-        // Generate a course with 5 sections.
-        $generator = $this->getDataGenerator();
-        $numsections = 5;
-        $course = $generator->create_course(['numsections' => $numsections, 'format' => 'cvo'], ['createsections' => true]);
-
-        // Get section names for course.
-        $coursesections = $DB->get_records('course_sections', ['course' => $course->id]);
-
-        // Test get_section_name with default section names.
-        $courseformat = course_get_format($course);
-        // TODO: Add tests.
-    }
-
-    /**
      * Tests for format_cvo::get_section_name method with modified section names.
      */
     public function test_get_section_name_customised() {
