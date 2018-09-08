@@ -59,5 +59,7 @@ script:
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
   - moodle-plugin-ci behat --profile chrome
+  - moodle-plugin-ci phpunit --coverage-clover
+
 after_success:
   - moodle-plugin-ci coveralls-upload
