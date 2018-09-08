@@ -196,4 +196,70 @@ class format_cvo_testcase extends advanced_testcase {
         $enddata = $weeksformat->get_default_course_enddate($courseform->get_quick_form());
         $this->assertEquals($enddate, $enddata);
     }
+
+    /**
+     * Test privacy.
+     */
+    public function test_privacy() {
+        $privacy = new format_cvo\privacy\provider();
+        $this->assertEquals($privacy->get_reason(), 'privacy:metadata');
+    }
+
+    /**
+     * Test upgrade.
+     */
+    public function test_upgrade() {
+        global $CFG;
+        $this->resetAfterTest(true);
+        require_once($CFG->dirroot . '/course/format/cvo/db/upgrade.php');
+        require_once($CFG->libdir . '/upgradelib.php');
+        try {
+            $this->assertTrue(xmldb_format_cvo_upgrade(time()));
+            $this->fail('Exception expected');
+        } catch (moodle_exception $e) {
+            $this->assertEquals(1, preg_match('/^Cannot downgrade/', $e->getMessage()));
+        }
+    }
+
+    /**
+     * Test renderer.
+     */
+    public function test_renderer() {
+        global $CFG, $USER;
+        $this->resetAfterTest(true);
+        require_once($CFG->dirroot . '/course/format/cvo/renderer.php');
+        $this->setAdminUser();
+        $generator = $this->getDataGenerator();
+        $course = $generator->create_course(['numsections' => 5, 'format' => 'cvo'], ['createsections' => true]);
+        $user = $generator->create_user();
+        $page = $generator->get_plugin_generator('mod_page')->create_instance(['course' => $course]);
+        $forum = $generator->get_plugin_generator('mod_forum')->create_instance(['course' => $course]);
+        $record = new stdClass();
+        $record->course = $course->id;
+        $record->userid = $user->id;
+        $record->forum = $forum->id;
+        $discussionoff = $generator->get_plugin_generator('mod_forum')->create_discussion($record);
+        $page = new moodle_page();
+        $page->set_context(context_course::instance($course->id));
+        $page->set_course($course);
+        $page->set_pagelayout('standard');
+        $page->set_pagetype('course-view');
+        $page->set_url('/course/format.php?id=' . $course->id);
+        $renderer = new \format_cvo_renderer($page, null);
+        ob_start();
+        $renderer->print_single_section_page($course, null, null, null, null, 1);
+        $renderer->print_multiple_section_page($course, null, null, null, null, null);
+        ob_end_clean();
+        $modinfo = get_fast_modinfo($course);
+        $section = $modinfo->get_section_info(1);
+        $this->assertContains('Topic 1', $renderer->section_title($section, $course));
+        $section = $modinfo->get_section_info(2);
+        $this->assertContains('Topic 2', $renderer->section_title_without_link($section, $course));
+        set_section_visible($course->id, 2, 0);
+        $USER->editing = true;
+        ob_start();
+        $renderer->print_single_section_page($course, null, null, null, null, 2);
+        $renderer->print_multiple_section_page($course, null, null, null, null, null);
+        ob_end_clean();
+    }
 }
