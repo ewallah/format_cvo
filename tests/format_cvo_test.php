@@ -209,16 +209,23 @@ class format_cvo_testcase extends advanced_testcase {
      * Test upgrade.
      */
     public function test_upgrade() {
-        global $CFG;
+        global $CFG, $DB;
         $this->resetAfterTest(true);
         require_once($CFG->dirroot . '/course/format/cvo/db/upgrade.php');
         require_once($CFG->libdir . '/upgradelib.php');
+        $generator = $this->getDataGenerator();
+        $course = $generator->create_course(['numsections' => 5, 'format' => 'cvo'], ['createsections' => true]);
         try {
             $this->assertTrue(xmldb_format_cvo_upgrade(time()));
             $this->fail('Exception expected');
         } catch (moodle_exception $e) {
             $this->assertEquals(1, preg_match('/^Cannot downgrade/', $e->getMessage()));
         }
+        $this->assertEquals(5, $DB->count_records('course_sections', ['course' => $course->id]));
+        format_cvo_upgrade_remove_numsections();
+        $this->assertEquals(5, $DB->count_records('course_sections', ['course' => $course->id]));
+        format_cvo_upgrade_hide_extra_sections($course->id, 50);
+        $this->assertEquals(5, $DB->count_records('course_sections', ['course' => $course->id]));
     }
 
     /**
