@@ -62,7 +62,7 @@ class format_cvo_renderer extends format_topics_renderer {
         global $USER;
 
         if ($section->section == 0 && !$onsectionpage) {
-            if ($section->visible) {
+            if ($section->uservisible) {
                 $forums = forum_get_readable_forums($USER->id, $course->id);
                 foreach ($forums as $forum) {
                     forum_print_latest_discussions($course, $forum, 3);
