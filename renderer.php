@@ -139,7 +139,7 @@ class format_cvo_renderer extends format_topics_renderer {
         }
 
         // Cache.
-        $groups = array();
+        $groups = [];
 
         // If the user can post discussions, then this is a good place to put the
         // button for it. We do not show the button if we are showing site news
@@ -250,7 +250,7 @@ class format_cvo_renderer extends format_topics_renderer {
         if ($forumtracked) {
             $unreads = forum_get_discussions_unread($cm);
         } else {
-            $unreads = array();
+            $unreads = [];
         }
 
         if ($displayformat == 'header') {
@@ -475,7 +475,7 @@ class format_cvo_renderer extends format_topics_renderer {
      * @deprecated since Moodle 3.7
      */
     private function forum_post_nesting_cache() {
-        static $nesting = array();
+        static $nesting = [];
         return $nesting;
     }
 
@@ -486,14 +486,6 @@ class format_cvo_renderer extends format_topics_renderer {
      * Replies can be nested before forum_print_post_end and should reflect the structure of
      * thread.
      *
-     * @global object
-     * @global object
-     * @uses FORUM_MODE_THREADED
-     * @uses PORTFOLIO_FORMAT_PLAINHTML
-     * @uses PORTFOLIO_FORMAT_FILE
-     * @uses PORTFOLIO_FORMAT_RICHHTML
-     * @uses PORTFOLIO_ADD_TEXT_LINK
-     * @uses CONTEXT_MODULE
      * @param object $post The post to print.
      * @param object $discussion
      * @param object $forum
@@ -504,15 +496,15 @@ class format_cvo_renderer extends format_topics_renderer {
      * @param boolean $link Just print a shortened version of the post as a link to the full post.
      * @param string $footer Extra stuff to print after the message.
      * @param string $highlight Space-separated list of terms to highlight.
-     * @param int $post_read true, false or -99. If we already know whether this user
+     * @param int|null $post_isread true, false or -99. If we already know whether this user
      *          has read this post, pass that in, otherwise, pass in -99, and this
      *          function will work it out.
      * @param boolean $dummyifcantsee When forum_user_can_see_post says that
      *          the current user can't see this post, if this argument is true
      *          (the default) then print a dummy 'you can't see this post' post.
      *          If false, don't output anything at all.
-     * @param bool|null $istracked
-     * @return void
+     * @param boolean|null $istracked
+     * @return boolean void
      * @deprecated since Moodle 3.7
      */
     private function forum_print_post($post, $discussion, $forum, &$cm, $course, $ownpost=false, $reply=false, $link=false,
@@ -537,11 +529,11 @@ class format_cvo_renderer extends format_topics_renderer {
         $post->message = file_rewrite_pluginfile_urls($post->message, 'pluginfile.php', $modcontext->id, 'mod_forum', 'post', $post->id);
         if (!empty($CFG->enableplagiarism)) {
             require_once($CFG->libdir.'/plagiarismlib.php');
-            $post->message .= plagiarism_get_links(array('userid' => $post->userid,
+            $post->message .= plagiarism_get_links(['userid' => $post->userid,
                 'content' => $post->message,
                 'cmid' => $cm->id,
                 'course' => $post->course,
-                'forum' => $post->forum));
+                'forum' => $post->forum]);
         }
 
         // caching
@@ -550,7 +542,7 @@ class format_cvo_renderer extends format_topics_renderer {
         }
 
         if (!isset($cm->cache->caps)) {
-            $cm->cache->caps = array();
+            $cm->cache->caps = [];
             $cm->cache->caps['mod/forum:viewdiscussion']   = has_capability('mod/forum:viewdiscussion', $modcontext);
             $cm->cache->caps['moodle/site:viewfullnames']  = has_capability('moodle/site:viewfullnames', $modcontext);
             $cm->cache->caps['mod/forum:editanypost']      = has_capability('mod/forum:editanypost', $modcontext);
@@ -581,25 +573,23 @@ class format_cvo_renderer extends format_topics_renderer {
                 return;
             }
 
-            $output .= html_writer::start_tag('div', array('class' => 'forumpost clearfix',
-                                                           'aria-label' => get_string('hiddenforumpost', 'forum')));
-            $output .= html_writer::start_tag('header', array('class' => 'row header'));
-            $output .= html_writer::tag('div', '', array('class' => 'left picture', 'role' => 'presentation')); // Picture.
+            $output .= html_writer::start_tag('div', ['class' => 'forumpost clearfix', 'aria-label' => get_string('hiddenforumpost', 'forum')]);
+            $output .= html_writer::start_tag('header', ['class' => 'row header']);
+            $output .= html_writer::tag('div', '', ['class' => 'left picture', 'role' => 'presentation']); // Picture.
             if ($post->parent) {
-                $output .= html_writer::start_tag('div', array('class' => 'topic'));
+                $output .= html_writer::start_tag('div', ['class' => 'topic']);
             } else {
-                $output .= html_writer::start_tag('div', array('class' => 'topic starter'));
+                $output .= html_writer::start_tag('div', ['class' => 'topic starter']);
             }
-            $output .= html_writer::tag('div', get_string('forumsubjecthidden','forum'), array('class' => 'subject',
-                                                                                               'role' => 'header',
-                                                                                               'id' => ('headp' . $post->id))); // Subject.
-            $authorclasses = array('class' => 'author');
+            $output .= html_writer::tag('div', get_string('forumsubjecthidden','forum'),
+               ['class' => 'subject', 'role' => 'header', 'id' => ('headp' . $post->id)]); // Subject.
+            $authorclasses = ['class' => 'author'];
             $output .= html_writer::tag('address', get_string('forumauthorhidden', 'forum'), $authorclasses); // Author.
             $output .= html_writer::end_tag('div');
             $output .= html_writer::end_tag('header'); // Header.
-            $output .= html_writer::start_tag('div', array('class'=>'row'));
-            $output .= html_writer::tag('div', '&nbsp;', array('class'=>'left side')); // Groups
-            $output .= html_writer::tag('div', get_string('forumbodyhidden','forum'), array('class'=>'content')); // Content
+            $output .= html_writer::start_tag('div', ['class' => 'row']);
+            $output .= html_writer::tag('div', '&nbsp;', ['class' => 'left side']); // Groups
+            $output .= html_writer::tag('div', get_string('forumbodyhidden', 'forum'), ['class' => 'content']); // Content
             $output .= html_writer::end_tag('div'); // row
             $output .= html_writer::end_tag('div'); // forumpost
 
@@ -626,8 +616,8 @@ class format_cvo_renderer extends format_topics_renderer {
                     'aria-label' => get_string('forumbodydeleted', 'forum'),
                 ]);
 
-            $output .= html_writer::start_tag('header', array('class' => 'row header'));
-            $output .= html_writer::tag('div', '', array('class' => 'left picture', 'role' => 'presentation'));
+            $output .= html_writer::start_tag('header', ['class' => 'row header']);
+            $output .= html_writer::tag('div', '', ['class' => 'left picture', 'role' => 'presentation']);
 
             $classes = ['topic'];
             if (!empty($post->parent)) {
@@ -673,7 +663,7 @@ class format_cvo_renderer extends format_topics_renderer {
             $str->markunread   = get_string('markunread', 'forum');
         }
 
-        $discussionlink = new moodle_url('/mod/forum/discuss.php', array('d'=>$post->discussion));
+        $discussionlink = new moodle_url('/mod/forum/discuss.php', ['d' => $post->discussion]);
 
         // Build an object that represents the posting user
         $postuser = new stdClass;
@@ -681,11 +671,11 @@ class format_cvo_renderer extends format_topics_renderer {
         $postuser = username_load_fields_from_object($postuser, $post, null, $postuserfields);
         $postuser->id = $post->userid;
         $postuser->fullname    = fullname($postuser, $cm->cache->caps['moodle/site:viewfullnames']);
-        $postuser->profilelink = new moodle_url('/user/view.php', array('id'=>$post->userid, 'course'=>$course->id));
+        $postuser->profilelink = new moodle_url('/user/view.php', ['id' => $post->userid, 'course' => $course->id]);
 
         // Prepare the groups the posting user belongs to
         if (isset($cm->cache->usersgroups)) {
-            $groups = array();
+            $groups = [];
             if (isset($cm->cache->usersgroups[$post->userid])) {
                 foreach ($cm->cache->usersgroups[$post->userid] as $gid) {
                     $groups[$gid] = $cm->cache->groups[$gid];
@@ -702,17 +692,17 @@ class format_cvo_renderer extends format_topics_renderer {
         $shortenpost = ($link && (strlen(strip_tags($post->message)) > $CFG->forum_longpost));
 
         // Prepare an array of commands
-        $commands = array();
+        $commands = [];
 
         // Add a permalink.
         $permalink = new moodle_url($discussionlink);
         $permalink->set_anchor('p' . $post->id);
-        $commands[] = array('url' => $permalink, 'text' => get_string('permalink', 'forum'), 'attributes' => ['rel' => 'bookmark']);
+        $commands[] = ['url' => $permalink, 'text' => get_string('permalink', 'forum'), 'attributes' => ['rel' => 'bookmark']];
 
         // SPECIAL CASE: The front page can display a news item post to non-logged in users.
         // Don't display the mark read / unread controls in this case.
         if ($istracked && $CFG->forum_usermarksread && isloggedin()) {
-            $url = new moodle_url($discussionlink, array('postid'=>$post->id, 'mark'=>'unread'));
+            $url = new moodle_url($discussionlink, ['postid' => $post->id, 'mark' => 'unread']);
             $text = $str->markunread;
             if (!$postisread) {
                 $url->param('mark', 'read');
@@ -723,7 +713,7 @@ class format_cvo_renderer extends format_topics_renderer {
             } else {
                 $url->set_anchor('p'.$post->id);
             }
-            $commands[] = array('url'=>$url, 'text'=>$text, 'attributes' => ['rel' => 'bookmark']);
+            $commands[] = ['url' => $url, 'text' => $text, 'attributes' => ['rel' => 'bookmark']];
         }
 
         // Zoom in to the parent specifically
@@ -734,7 +724,7 @@ class format_cvo_renderer extends format_topics_renderer {
             } else {
                 $url->set_anchor('p'.$post->parent);
             }
-            $commands[] = array('url'=>$url, 'text'=>$str->parent, 'attributes' => ['rel' => 'bookmark']);
+            $commands[] = ['url' => $url, 'text' => $str->parent, 'attributes' => ['rel' => 'bookmark']];
         }
 
         // Hack for allow to edit news posts those are not displayed yet until they are displayed
@@ -746,31 +736,31 @@ class format_cvo_renderer extends format_topics_renderer {
         if ($forum->type == 'single' and $discussion->firstpost == $post->id) {
             if (has_capability('moodle/course:manageactivities', $modcontext)) {
                 // The first post in single simple is the forum description.
-                $commands[] = array('url'=>new moodle_url('/course/modedit.php', array('update'=>$cm->id, 'sesskey'=>sesskey(), 'return'=>1)), 'text'=>$str->edit);
+                $commands[] = ['url' => new moodle_url('/course/modedit.php', ['update' => $cm->id, 'sesskey' => sesskey(), 'return' => 1]), 'text' => $str->edit];
             }
         } else if (($ownpost && $age < $CFG->maxeditingtime) || $cm->cache->caps['mod/forum:editanypost']) {
-            $commands[] = array('url'=>new moodle_url('/mod/forum/post.php', array('edit'=>$post->id)), 'text'=>$str->edit);
+            $commands[] = ['url' => new moodle_url('/mod/forum/post.php', ['edit' => $post->id]), 'text' => $str->edit];
         }
 
         if ($cm->cache->caps['mod/forum:splitdiscussions'] && $post->parent && $forum->type != 'single') {
-            $commands[] = array('url'=>new moodle_url('/mod/forum/post.php', array('prune'=>$post->id)), 'text'=>$str->prune, 'title'=>$str->pruneheading);
+            $commands[] = ['url' => new moodle_url('/mod/forum/post.php', ['prune' => $post->id]), 'text' => $str->prune, 'title' => $str->pruneheading];
         }
 
         if ($forum->type == 'single' and $discussion->firstpost == $post->id) {
             // Do not allow deleting of first post in single simple type.
         } else if (($ownpost && $age < $CFG->maxeditingtime && $cm->cache->caps['mod/forum:deleteownpost']) || $cm->cache->caps['mod/forum:deleteanypost']) {
-            $commands[] = array('url'=>new moodle_url('/mod/forum/post.php', array('delete'=>$post->id)), 'text'=>$str->delete);
+            $commands[] = ['url' => new moodle_url('/mod/forum/post.php', ['delete' => $post->id]), 'text' => $str->delete];
         }
 
         if ($reply) {
-            $commands[] = array('url'=>new moodle_url('/mod/forum/post.php#mformforum', array('reply'=>$post->id)), 'text'=>$str->reply);
+            $commands[] = ['url' => new moodle_url('/mod/forum/post.php#mformforum', ['reply' => $post->id]), 'text' => $str->reply];
         }
 
         if ($CFG->enableportfolios && ($cm->cache->caps['mod/forum:exportpost'] || ($ownpost && $cm->cache->caps['mod/forum:exportownpost']))) {
-            $p = array('postid' => $post->id);
+            $p = ['postid' => $post->id];
             require_once($CFG->libdir.'/portfoliolib.php');
             $button = new portfolio_add_button();
-            $button->set_callback_options('forum_portfolio_caller', array('postid' => $post->id), 'mod_forum');
+            $button->set_callback_options('forum_portfolio_caller', ['postid' => $post->id], 'mod_forum');
             if (empty($attachments)) {
                 $button->set_formats(PORTFOLIO_FORMAT_PLAINHTML);
             } else {
@@ -784,7 +774,6 @@ class format_cvo_renderer extends format_topics_renderer {
         }
         // Finished building commands
 
-
         // Begin output
 
         $output  = '';
@@ -796,7 +785,7 @@ class format_cvo_renderer extends format_topics_renderer {
                 $forumpostclass = ' unread';
                 // If this is the first unread post printed then give it an anchor and id of unread.
                 if (!$firstunreadanchorprinted) {
-                    $output .= html_writer::tag('a', '', array('id' => 'unread'));
+                    $output .= html_writer::tag('a', '', ['id' => 'unread']);
                     $firstunreadanchorprinted = true;
                 }
             }
@@ -875,8 +864,8 @@ class format_cvo_renderer extends format_topics_renderer {
             $output .= html_writer::end_div(); // Left side.
         }
 
-        $output .= html_writer::start_tag('div', array('class'=>'no-overflow'));
-        $output .= html_writer::start_tag('div', array('class'=>'content'));
+        $output .= html_writer::start_tag('div', ['class' => 'no-overflow']);
+        $output .= html_writer::start_tag('div', ['class' => 'content']);
 
         $options = new stdClass;
         $options->para    = false;
@@ -889,7 +878,7 @@ class format_cvo_renderer extends format_topics_renderer {
             $postcontent  = shorten_text($postcontent, $CFG->forum_shortpost);
             $postcontent .= html_writer::link($discussionlink, get_string('readtherest', 'forum'));
             $postcontent .= html_writer::tag('div', '('.get_string('numwords', 'moodle', count_words($post->message)).')',
-                array('class'=>'post-word-count'));
+                ['class' => 'post-word-count']);
         } else {
             // Prepare whole post
             $postclass    = 'fullpost';
@@ -899,9 +888,9 @@ class format_cvo_renderer extends format_topics_renderer {
             }
             if (!empty($forum->displaywordcount)) {
                 $postcontent .= html_writer::tag('div', get_string('numwords', 'moodle', count_words($postcontent)),
-                    array('class'=>'post-word-count'));
+                    ['class' => 'post-word-count']);
             }
-            $postcontent .= html_writer::tag('div', $attachedimages, array('class'=>'attachedimages'));
+            $postcontent .= html_writer::tag('div', $attachedimages, ['class' => 'attachedimages']);
         }
 
         if (\core_tag_tag::is_enabled('mod_forum', 'forum_posts')) {
@@ -909,26 +898,26 @@ class format_cvo_renderer extends format_topics_renderer {
         }
 
         // Output the post content
-        $output .= html_writer::tag('div', $postcontent, array('class'=>'posting '.$postclass));
+        $output .= html_writer::tag('div', $postcontent, ['class' => 'posting '.$postclass]);
         $output .= html_writer::end_tag('div'); // Content
         $output .= html_writer::end_tag('div'); // Content mask
         $output .= html_writer::end_tag('div'); // Row
 
-        $output .= html_writer::start_tag('nav', array('class' => 'row side'));
-        $output .= html_writer::tag('div','&nbsp;', array('class'=>'left'));
-        $output .= html_writer::start_tag('div', array('class'=>'options clearfix'));
+        $output .= html_writer::start_tag('nav', ['class' => 'row side']);
+        $output .= html_writer::tag('div','&nbsp;', ['class' => 'left']);
+        $output .= html_writer::start_tag('div', ['class' => 'options clearfix']);
 
         if (!empty($attachments)) {
-            $output .= html_writer::tag('div', $attachments, array('class' => 'attachments'));
+            $output .= html_writer::tag('div', $attachments, ['class' => 'attachments']);
         }
 
         // Output ratings
         if (!empty($post->rating)) {
-            $output .= html_writer::tag('div', $OUTPUT->render($post->rating), array('class'=>'forum-post-rating'));
+            $output .= html_writer::tag('div', $OUTPUT->render($post->rating), ['class' => 'forum-post-rating']);
         }
 
         // Output the commands
-        $commandhtml = array();
+        $commandhtml = [];
         foreach ($commands as $command) {
             if (is_array($command)) {
                 $attributes = ['class' => 'nav-item nav-link'];
@@ -940,7 +929,7 @@ class format_cvo_renderer extends format_topics_renderer {
                 $commandhtml[] = $command;
             }
         }
-        $output .= html_writer::tag('div', implode(' ', $commandhtml), array('class' => 'commands nav'));
+        $output .= html_writer::tag('div', implode(' ', $commandhtml), ['class' => 'commands nav']);
 
         // Output link to post if required
         if ($link) {
@@ -965,7 +954,7 @@ class format_cvo_renderer extends format_topics_renderer {
                 $replystring .= '</span>';
             }
 
-            $output .= html_writer::start_tag('div', array('class'=>'link'));
+            $output .= html_writer::start_tag('div', ['class' => 'link']);
             $output .= html_writer::link($discussionlink, get_string($langstring, 'forum'));
             $output .= '&nbsp;('.$replystring.')';
             $output .= html_writer::end_tag('div'); // link
@@ -973,7 +962,7 @@ class format_cvo_renderer extends format_topics_renderer {
 
         // Output footer if required
         if ($footer) {
-            $output .= html_writer::tag('div', $footer, array('class'=>'footer'));
+            $output .= html_writer::tag('div', $footer, ['class' => 'footer']);
         }
 
         // Close remaining open divs
