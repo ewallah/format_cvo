@@ -991,5 +991,4 @@ class format_cvo_renderer extends format_topics_renderer {
         echo $output;
         return;
     }
-
 }
