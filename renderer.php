@@ -496,14 +496,15 @@ class format_cvo_renderer extends format_topics_renderer {
      * @param boolean $link Just print a shortened version of the post as a link to the full post.
      * @param string $footer Extra stuff to print after the message.
      * @param string $highlight Space-separated list of terms to highlight.
-     * @param int|null $postisread true, false or -99. If we already know whether this user
+     * @param int $postisread true, false or -99. If we already know whether this user
      *          has read this post, pass that in, otherwise, pass in -99, and this
      *          function will work it out.
      * @param boolean $dummyifcantsee When forum_user_can_see_post says that
      *          the current user can't see this post, if this argument is true
      *          (the default) then print a dummy 'you can't see this post' post.
      *          If false, don't output anything at all.
-     * @param boolean|null $istracked
+     * @param boolean $istracked
+     * @param boolean $return
      * @return boolean void
      * @deprecated since Moodle 3.7
      */
@@ -840,10 +841,10 @@ class format_cvo_renderer extends format_topics_renderer {
            ['role' => 'heading', 'aria-level' => '1', 'id' => ('headp' . $post->id)]);
 
         if ($authorhidden) {
-            $bytext = userdate_htmltime($post->created);
+            $bytext = userdate($post->created);
         } else {
             $by = new stdClass();
-            $by->date = userdate_htmltime($post->created);
+            $by->date = userdate($post->created);
             $by->name = html_writer::link($postuser->profilelink, $postuser->fullname);
             $bytext = get_string('bynameondate', 'forum', $by);
         }
