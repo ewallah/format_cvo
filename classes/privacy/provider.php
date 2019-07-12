@@ -19,7 +19,7 @@
  *
  * @package   format_cvo
  * @copyright 2018 cvo-ssh.be
- * @author    Renaat Debleu (info@eWallah.net)
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @package   format_cvo
  * @copyright 2018 cvo-ssh.be
- * @author    Renaat Debleu (info@eWallah.net)
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {

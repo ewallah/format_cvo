@@ -19,7 +19,7 @@
  *
  * @package    format_cvo
  * @copyright  2018 cvo-ssh.be
- * @author     Renaat Debleu (info@eWallah.net)
+ * @author     Renaat Debleu <info@eWallah.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
