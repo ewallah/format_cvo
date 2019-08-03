@@ -175,11 +175,11 @@ class format_cvo_renderer extends format_topics_renderer {
             $button->class = 'singlebutton forumaddnew';
             $button->formid = 'newdiscussionform';
             echo $OUTPUT->render($button);
-
         } else if (isguestuser() or !isloggedin() or $forum->type == 'news' or
             $forum->type == 'qanda' and !has_capability('mod/forum:addquestion', $context) or
             $forum->type != 'qanda' and !has_capability('mod/forum:startdiscussion', $context)) {
             // No button and no info.
+            $tmp = 1;
         } else if ($groupmode and !has_capability('moodle/site:accessallgroups', $context)) {
             // Inform users why they can not post new discussion.
             if (!$currentgroup) {

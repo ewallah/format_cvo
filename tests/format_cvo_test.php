@@ -245,7 +245,7 @@ class format_cvo_testcase extends advanced_testcase {
         $record->course = $course->id;
         $record->userid = $user->id;
         $record->forum = $forum->id;
-        $discussionoff = $generator->get_plugin_generator('mod_forum')->create_discussion($record);
+        $generator->get_plugin_generator('mod_forum')->create_discussion($record);
         $page = new moodle_page();
         $page->set_context(context_course::instance($course->id));
         $page->set_course($course);
