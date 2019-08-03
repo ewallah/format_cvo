@@ -180,7 +180,6 @@ class format_cvo_renderer extends format_topics_renderer {
             $forum->type == 'qanda' and !has_capability('mod/forum:addquestion', $context) or
             $forum->type != 'qanda' and !has_capability('mod/forum:startdiscussion', $context)) {
             // No button and no info.
-            $ignore = true;
         } else if ($groupmode and !has_capability('moodle/site:accessallgroups', $context)) {
             // Inform users why they can not post new discussion.
             if (!$currentgroup) {
@@ -766,7 +765,6 @@ class format_cvo_renderer extends format_topics_renderer {
 
         if ($CFG->enableportfolios && ($cm->cache->caps['mod/forum:exportpost'] ||
             ($ownpost && $cm->cache->caps['mod/forum:exportownpost']))) {
-            $p = ['postid' => $post->id];
             require_once($CFG->libdir.'/portfoliolib.php');
             $button = new portfolio_add_button();
             $button->set_callback_options('forum_portfolio_caller', ['postid' => $post->id], 'mod_forum');
