@@ -1,4 +1,4 @@
-@format @format_cvo @javascript
+@format @format_cvo
 
 Feature: format_cvo
 
@@ -42,7 +42,6 @@ Feature: format_cvo
       | Subject | Student post subject 1 |
       | Message | Student post message 1 |
 
-  @javascript
   Scenario: Teacher can add elements
     Given I log out
     And I log in as "teacher1"
@@ -56,7 +55,6 @@ Feature: format_cvo
       | Subject | Teacher post subject 5 |
       | Message | Teacher post message 5 |
 
-  @javascript
   Scenario: Student can not add more discussions
     Given I am on "Course 1" course homepage
     Then I should see "Teacher post subject 1"
