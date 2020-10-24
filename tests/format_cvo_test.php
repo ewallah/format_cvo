@@ -259,9 +259,9 @@ class format_cvo_testcase extends advanced_testcase {
         ob_end_clean();
         $modinfo = get_fast_modinfo($course);
         $section = $modinfo->get_section_info(1);
-        $this->assertContains('Topic 1', $renderer->section_title($section, $course));
+        $this->assertStringContainsString('Topic 1', $renderer->section_title($section, $course));
         $section = $modinfo->get_section_info(2);
-        $this->assertContains('Topic 2', $renderer->section_title_without_link($section, $course));
+        $this->assertStringContainsString('Topic 2', $renderer->section_title_without_link($section, $course));
         set_section_visible($course->id, 2, 0);
         $USER->editing = true;
         ob_start();
