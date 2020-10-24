@@ -90,7 +90,7 @@ class format_cvo_renderer extends format_topics_renderer {
      */
     private function forum_print_latest_discussions($course, $forum, $maxdiscussions = -1, $displayformat = 'plain', $sort = '',
                                             $currentgroup = -1, $groupmode = -1, $page = -1, $perpage = 100, $cm = null) {
-        global $CFG, $USER, $OUTPUT;
+        global $CFG, $USER;
 
         require_once($CFG->dirroot . '/course/lib.php');
 
@@ -174,7 +174,7 @@ class format_cvo_renderer extends format_topics_renderer {
             $button = new single_button(new moodle_url('/mod/forum/post.php', ['forum' => $forum->id]), $buttonadd, 'get');
             $button->class = 'singlebutton forumaddnew';
             $button->formid = 'newdiscussionform';
-            echo $OUTPUT->render($button);
+            echo $this->output->render($button);
         } else if (isguestuser() or !isloggedin() or $forum->type == 'news' or
             $forum->type == 'qanda' and !has_capability('mod/forum:addquestion', $context) or
             $forum->type != 'qanda' and !has_capability('mod/forum:startdiscussion', $context)) {
@@ -184,12 +184,12 @@ class format_cvo_renderer extends format_topics_renderer {
             // Inform users why they can not post new discussion.
             if (!$currentgroup) {
                 if (!has_capability('mod/forum:canposttomygroups', $context)) {
-                    echo $OUTPUT->notification(get_string('cannotadddiscussiongroup', 'forum'));
+                    echo $this->output->notification(get_string('cannotadddiscussiongroup', 'forum'));
                 } else {
-                    echo $OUTPUT->notification(get_string('cannotadddiscussionall', 'forum'));
+                    echo $this->output->notification(get_string('cannotadddiscussionall', 'forum'));
                 }
             } else if (!groups_is_member($currentgroup)) {
-                echo $OUTPUT->notification(get_string('cannotadddiscussion', 'forum'));
+                echo $this->output->notification(get_string('cannotadddiscussion', 'forum'));
             }
         }
 
@@ -217,7 +217,7 @@ class format_cvo_renderer extends format_topics_renderer {
             $numdiscussions = forum_get_discussions_count($cm);
 
             // Show the paging bar.
-            echo $OUTPUT->paging_bar($numdiscussions, $page, $perpage, "view.php?f=$forum->id");
+            echo $this->output->paging_bar($numdiscussions, $page, $perpage, "view.php?f=$forum->id");
             if ($numdiscussions > 1000) {
                 // Saves some memory on sites with very large forums.
                 $replies = forum_count_discussion_replies($forum->id, $sort, $maxdiscussions,
@@ -270,7 +270,7 @@ class format_cvo_renderer extends format_topics_renderer {
                         echo '<a title="'.get_string('markallread', 'forum').
                              '" href="'.$CFG->wwwroot.'/mod/forum/markposts.php?f='.
                              $forum->id.'&amp;mark=read&amp;return=/mod/forum/view.php&amp;sesskey=' . sesskey() . '">'.
-                             $OUTPUT->pix_icon('t/markasread', get_string('markallread', 'forum')) . '</a>';
+                             $this->output->pix_icon('t/markasread', get_string('markallread', 'forum')) . '</a>';
                     }
                     echo '</th>';
                 }
@@ -375,7 +375,7 @@ class format_cvo_renderer extends format_topics_renderer {
 
         if ($page != -1) {
             // Show the paging bar.
-            echo $OUTPUT->paging_bar($numdiscussions, $page, $perpage, "view.php?f=$forum->id");
+            echo $this->output->paging_bar($numdiscussions, $page, $perpage, "view.php?f=$forum->id");
         }
     }
 
@@ -509,7 +509,7 @@ class format_cvo_renderer extends format_topics_renderer {
      */
     private function forum_print_post($post, $discussion, $forum, &$cm, $course, $ownpost=false, $reply=false, $link=false,
                               $footer="", $highlight="", $postisread=null, $dummyifcantsee=true, $istracked=null, $return=false) {
-        global $USER, $CFG, $OUTPUT;
+        global $USER, $CFG;
 
         require_once($CFG->libdir . '/filelib.php');
 
@@ -824,7 +824,7 @@ class format_cvo_renderer extends format_topics_renderer {
 
         // User picture.
         if (!$authorhidden) {
-            $picture = $OUTPUT->user_picture($postuser, ['courseid' => $course->id]);
+            $picture = $this->output->user_picture($postuser, ['courseid' => $course->id]);
             $output .= html_writer::div($picture, 'left picture', ['role' => 'presentation']);
             $topicclass = 'topic' . $topicclass;
         }
@@ -902,7 +902,7 @@ class format_cvo_renderer extends format_topics_renderer {
         }
 
         if (\core_tag_tag::is_enabled('mod_forum', 'forum_posts')) {
-            $postcontent .= $OUTPUT->tag_list(core_tag_tag::get_item_tags('mod_forum', 'forum_posts', $post->id),
+            $postcontent .= $this->output->tag_list(core_tag_tag::get_item_tags('mod_forum', 'forum_posts', $post->id),
                 null, 'forum-tags');
         }
 
@@ -922,7 +922,7 @@ class format_cvo_renderer extends format_topics_renderer {
 
         // Output ratings.
         if (!empty($post->rating)) {
-            $output .= html_writer::tag('div', $OUTPUT->render($post->rating), ['class' => 'forum-post-rating']);
+            $output .= html_writer::tag('div', $this->output->render($post->rating), ['class' => 'forum-post-rating']);
         }
 
         // Output the commands.

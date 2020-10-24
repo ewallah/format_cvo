@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * This method finds all courses in 'cvo' format that have actual number of sections
  * bigger than their 'numsections' course format option.
- * For each such course we call {@link format_cvo_upgrade_hide_extra_sections()} and
+ * For each such course we call format_cvo_upgrade_hide_extra_sections and
  * either delete or hide "orphaned" sections.
  */
 function format_cvo_upgrade_remove_numsections() {
